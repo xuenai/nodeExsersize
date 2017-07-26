@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8' />
+	<title>注册页面</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+	<style type="text/css">
+		.panel{height: 40px;line-height: 40px;text-indent: 16px;text-align: center;background: black;color: #fff;}
+	</style>
+</head>
+<body>
+<div style='margin-top:100px;' class="container">
+		<div class="panel panel-primary">注册页</div>
+		<form>
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">用户名</label>
+			    <input type="text" class="form-control" id="username" placeholder="用户名">
+			  </div>
+			  <div class="form-group">
+			    <label for="pwd">密码</label>
+			    <input type="password" class="form-control" id="pwd" placeholder="Password">
+			  </div>
+			   <div class="form-group">
+			    <label for="pwd1">确认密码</label>
+			    <input type="password" class="form-control" id="pwd1" placeholder="Password">
+			  </div>
+
+			  <button type="submit" class="btn btn-success btn-block">Submit</button>
+		</form>
+</div>
+</body>
+<script src="/js/zepto.min.js"></script>
+<!-- 上面路径，静态文件目录可以不写静态的目录 -->
+<script type="text/javascript">
+	$(function(){
+		var username = $('#username'),
+			pwd = $('#pwd'),
+			pwd1 = $('#pwd1');
+		$('button').on('click',function(e){
+			e.preventDefault();
+
+			if(!username.val().trim() || !pwd.val().trim()){
+				alert('用户名或密码不能为空');
+				return; 
+			}else if(pwd.val().trim() != pwd1.val().trim()){
+				alert('两次输入的密码不一致');
+				return;
+			}
+
+			$.post('/api/register',{username:username.val().trim(),password:pwd.val().trim()},function(data){console.log(data);
+				if(data.code == 1){
+					// location.href = '/comment.html';
+					console.log(data);
+				}else{
+					// alert(data.msg);
+					console.log(data);
+				}
+			})
+
+		})
+	})
+</script>
+</html>
