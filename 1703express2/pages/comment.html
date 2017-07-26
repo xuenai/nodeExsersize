@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container">
+		<nav class="navbar navbar-default">
+           <div class="container-fluid">
+           	  <p>欢迎：<span id="username"></span></p>
+           </div>
+		</nav>
+
+        <ul class="list-group">
+		  <li class="list-group-item">	
+		  	<div class="media">
+		     <div class="media-left media-middle">
+		    <a href="#">
+		      <img class="media-object" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWQ3ZDk4NjhmOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1ZDdkOTg2OGY5Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxNCIgeT0iMzYuNSI+NjR4NjQ8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" alt="...">
+		    </a>
+		  </div>
+		  <div class="media-body">
+		    <h4 class="media-heading">Middle aligned media</h4>
+		     今天打老虎！啊哈哈
+		  </div>
+		</div></li>
+		</ul>
+
+	  <div class="">
+	  	   <div class="form-group">
+		     <label for="username">主题：</label>
+		     <input type="text" class="form-control" id="title" placeholder="请输入评论标题">
+		   </div>
+		   <label for="username">内容：</label>
+	  	  <textarea class="form-control" rows="3"></textarea>
+	  	   <div class="form-group">
+		    <label for="InputFile">请选择图片</label>
+		    <input type="file" id="InputFile">
+		  </div>
+		   <div class="imgBox">
+		  	   	  <img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png" alt="">
+		    </div>
+	  	  <button class="btn btn-success btn-block">提交</button>
+	  </div>
+
+	</div>
+</body>
+<script src="/js/zepto.min.js"></script>
+<script>
+	$(function(){
+		// 设置 欢迎 
+
+		$("#username").html(location.search.split('=')[1]);
+
+        //处理图片上传 
+
+        $("#InputFile").on('change',function(event) {
+        	event.preventDefault();
+            //console.log(123)
+            if (this.files.length) {
+               //判断文件类型
+               if (this.files[0].type=="image/png" || this.files[0].type=="image/jpeg") {
+
+                   var from = new FormData();
+                   from.append('upload',this.files[0]);
+
+                   $.ajax({
+	                   	url: '/api/upload',
+	                   	type: 'POST',
+	                   	dataType: 'json',
+	                   	data: from,
+                   		contentType: false, //发送信息到服务器的内容类型 告诉zepto不要去设置Content-Type请求头
+                          //默认是 application/x-www-form-urlencoded （form类型） 
+	                    processData: false, //processData 是jq 独有的参数 用于对data参数进行序列化处理，默认值是true，
+	                     //所谓序列化 就是比如{ width:1680, height:1050 }参数对象序列化为width=1680&height=1050这样的字符串。
+	                   	success:function(data){
+                           //console.log(data)
+                           $(".imgBox").find('img').attr("src",data.img)
+	                   	}
+                    })
+
+               }
+            };
+
+            
+        });
+
+	})
+</script>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style>
+        .panel{
+        	line-height: 44px;
+        	text-align: center;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+		      <div class="panel">登陆</div>
+		      <div class="form-group">
+			    <label for="exampleInputEmail1">用户名</label>
+			    <input type="text" class="form-control" id="username" placeholder="用户名">
+			  </div>
+			  <div class="form-group">
+			    <label for="pwd">密码</label>
+			    <input type="password" class="form-control" id="pwd" placeholder="Password">
+			  </div>
+	          <button id="btn" class="btn btn-big btn-success">提交</button>
+	</div>
+	
+</body>
+<script src="/js/zepto.min.js"></script>
+<script>
+	$(function(){
+         
+        $('#btn').on('click', function(event) {
+        	event.preventDefault();
+             var params = {};
+             params.username = $("#username").val();
+             params.pwd = $("#pwd").val().trim();
+
+             if (!params.username || !params.pwd) {
+             	alert("不能为空！");
+             	return 
+             };
+        	$.post('/login',params,function(data){
+                 // console.log(data);
+                 if (!data.code) {
+                 	location.href="/comment.html?username="+data.user.username
+                 }else{
+                 	alert(data.msg);
+                 };
+                 
+        	})
+        }); 
+
+	})
+</script>
+</html>
